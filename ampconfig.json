@@ -1,0 +1,18 @@
+{
+  "dataServiceGeneratorVersion": "0.8.0",
+  "appInfo": {
+    "name": "Sarf",
+    "description": "A REST API for Sarf application - Back-end",
+    "version": "14n27u1f",
+    "id": "ckrx9lp7d10249351bs6t39ddscf",
+    "url": "https://app.amplication.com/ckrx9lp7d10249351bs6t39ddscf",
+    "settings": {
+      "dbHost": "localhost",
+      "dbName": "sarf_db",
+      "dbPassword": "admin",
+      "dbPort": 5432,
+      "dbUser": "admin",
+      "appId": "ckrx9lp7d10249351bs6t39ddscf"
+    }
+  }
+}
