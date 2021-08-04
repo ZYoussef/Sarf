@@ -17,6 +17,8 @@ import { CurrencyExchangeUpdateInput } from "./CurrencyExchangeUpdateInput";
 import { CurrencyExchange } from "./CurrencyExchange";
 import { CurrencyWhereInput } from "../../currency/base/CurrencyWhereInput";
 import { Currency } from "../../currency/base/Currency";
+import { ExchangeOfficeWhereInput } from "../../exchangeOffice/base/ExchangeOfficeWhereInput";
+import { ExchangeOffice } from "../../exchangeOffice/base/ExchangeOffice";
 
 export class CurrencyExchangeControllerBase {
   constructor(
@@ -231,7 +233,7 @@ export class CurrencyExchangeControllerBase {
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
   @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Get("/:id/currency")
+  @common.Get("/:id/idCurrency")
   @nestAccessControl.UseRoles({
     resource: "CurrencyExchange",
     action: "read",
@@ -242,7 +244,7 @@ export class CurrencyExchangeControllerBase {
     style: "deepObject",
     explode: true,
   })
-  async findManyCurrency(
+  async findManyIdCurrency(
     @common.Req() request: Request,
     @common.Param() params: CurrencyExchangeWhereUniqueInput,
     @nestAccessControl.UserRoles() userRoles: string[]
@@ -254,28 +256,13 @@ export class CurrencyExchangeControllerBase {
       possession: "any",
       resource: "Currency",
     });
-    const results = await this.service.findCurrency(params.id, {
+    const results = await this.service.findIdCurrency(params.id, {
       where: query,
       select: {
-        buyCurrency: true,
-        buyingRate: true,
         createdAt: true,
-
-        exchangeOffice: {
-          select: {
-            id: true,
-          },
-        },
-
-        highestBuyingRate: true,
-        highestSellingRate: true,
         id: true,
         iso: true,
-        lowestBuyingRate: true,
-        lowestSellingRate: true,
         Name: true,
-        sellCurrency: true,
-        sellingRate: true,
         updatedAt: true,
       },
     });
@@ -284,19 +271,19 @@ export class CurrencyExchangeControllerBase {
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
   @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Post("/:id/currency")
+  @common.Post("/:id/idCurrency")
   @nestAccessControl.UseRoles({
     resource: "CurrencyExchange",
     action: "update",
     possession: "any",
   })
-  async createCurrency(
+  async createIdCurrency(
     @common.Param() params: CurrencyExchangeWhereUniqueInput,
     @common.Body() body: CurrencyExchangeWhereUniqueInput[],
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<void> {
     const data = {
-      currency: {
+      idCurrency: {
         connect: body,
       },
     };
@@ -326,19 +313,19 @@ export class CurrencyExchangeControllerBase {
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
   @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Patch("/:id/currency")
+  @common.Patch("/:id/idCurrency")
   @nestAccessControl.UseRoles({
     resource: "CurrencyExchange",
     action: "update",
     possession: "any",
   })
-  async updateCurrency(
+  async updateIdCurrency(
     @common.Param() params: CurrencyExchangeWhereUniqueInput,
     @common.Body() body: CurrencyExchangeWhereUniqueInput[],
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<void> {
     const data = {
-      currency: {
+      idCurrency: {
         set: body,
       },
     };
@@ -368,19 +355,185 @@ export class CurrencyExchangeControllerBase {
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
   @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Delete("/:id/currency")
+  @common.Delete("/:id/idCurrency")
   @nestAccessControl.UseRoles({
     resource: "CurrencyExchange",
     action: "update",
     possession: "any",
   })
-  async deleteCurrency(
+  async deleteIdCurrency(
     @common.Param() params: CurrencyExchangeWhereUniqueInput,
     @common.Body() body: CurrencyExchangeWhereUniqueInput[],
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<void> {
     const data = {
-      currency: {
+      idCurrency: {
+        disconnect: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "CurrencyExchange",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"CurrencyExchange"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Get("/:id/idOffice")
+  @nestAccessControl.UseRoles({
+    resource: "CurrencyExchange",
+    action: "read",
+    possession: "any",
+  })
+  @swagger.ApiQuery({
+    type: () => ExchangeOfficeWhereInput,
+    style: "deepObject",
+    explode: true,
+  })
+  async findManyIdOffice(
+    @common.Req() request: Request,
+    @common.Param() params: CurrencyExchangeWhereUniqueInput,
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<ExchangeOffice[]> {
+    const query: ExchangeOfficeWhereInput = request.query;
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "ExchangeOffice",
+    });
+    const results = await this.service.findIdOffice(params.id, {
+      where: query,
+      select: {
+        address: true,
+        createdAt: true,
+        id: true,
+        managerName: true,
+        name: true,
+        phoneNumber: true,
+        updatedAt: true,
+      },
+    });
+    return results.map((result) => permission.filter(result));
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Post("/:id/idOffice")
+  @nestAccessControl.UseRoles({
+    resource: "CurrencyExchange",
+    action: "update",
+    possession: "any",
+  })
+  async createIdOffice(
+    @common.Param() params: CurrencyExchangeWhereUniqueInput,
+    @common.Body() body: CurrencyExchangeWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      idOffice: {
+        connect: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "CurrencyExchange",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"CurrencyExchange"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Patch("/:id/idOffice")
+  @nestAccessControl.UseRoles({
+    resource: "CurrencyExchange",
+    action: "update",
+    possession: "any",
+  })
+  async updateIdOffice(
+    @common.Param() params: CurrencyExchangeWhereUniqueInput,
+    @common.Body() body: CurrencyExchangeWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      idOffice: {
+        set: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "CurrencyExchange",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"CurrencyExchange"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
+  @common.Delete("/:id/idOffice")
+  @nestAccessControl.UseRoles({
+    resource: "CurrencyExchange",
+    action: "update",
+    possession: "any",
+  })
+  async deleteIdOffice(
+    @common.Param() params: CurrencyExchangeWhereUniqueInput,
+    @common.Body() body: CurrencyExchangeWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      idOffice: {
         disconnect: body,
       },
     };

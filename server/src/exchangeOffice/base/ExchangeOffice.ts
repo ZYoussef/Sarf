@@ -2,7 +2,7 @@ import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsDate, ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
-import { Currency } from "../../currency/base/Currency";
+import { CurrencyExchange } from "../../currencyExchange/base/CurrencyExchange";
 @ObjectType()
 class ExchangeOffice {
   @ApiProperty({
@@ -23,12 +23,12 @@ class ExchangeOffice {
 
   @ApiProperty({
     required: false,
-    type: () => [Currency],
+    type: () => [CurrencyExchange],
   })
   @ValidateNested()
-  @Type(() => Currency)
+  @Type(() => CurrencyExchange)
   @IsOptional()
-  currencies?: Array<Currency>;
+  currencyExchanges?: Array<CurrencyExchange>;
 
   @ApiProperty({
     required: true,

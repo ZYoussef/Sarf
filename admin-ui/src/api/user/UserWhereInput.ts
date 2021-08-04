@@ -4,6 +4,6 @@ import { StringFilter } from "../../util/StringFilter";
 export type UserWhereInput = {
   firstName?: StringNullableFilter;
   id?: StringFilter;
-  lastName?: StringNullableFilter;
+  lastName?: StringFilter;
   username?: StringFilter;
 };

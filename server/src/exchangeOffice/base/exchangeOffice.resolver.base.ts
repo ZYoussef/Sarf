@@ -14,8 +14,8 @@ import { DeleteExchangeOfficeArgs } from "./DeleteExchangeOfficeArgs";
 import { ExchangeOfficeFindManyArgs } from "./ExchangeOfficeFindManyArgs";
 import { ExchangeOfficeFindUniqueArgs } from "./ExchangeOfficeFindUniqueArgs";
 import { ExchangeOffice } from "./ExchangeOffice";
-import { CurrencyFindManyArgs } from "../../currency/base/CurrencyFindManyArgs";
-import { Currency } from "../../currency/base/Currency";
+import { CurrencyExchangeFindManyArgs } from "../../currencyExchange/base/CurrencyExchangeFindManyArgs";
+import { CurrencyExchange } from "../../currencyExchange/base/CurrencyExchange";
 import { ExchangeOfficeService } from "../exchangeOffice.service";
 
 @graphql.Resolver(() => ExchangeOffice)
@@ -195,24 +195,24 @@ export class ExchangeOfficeResolverBase {
     }
   }
 
-  @graphql.ResolveField(() => [Currency])
+  @graphql.ResolveField(() => [CurrencyExchange])
   @nestAccessControl.UseRoles({
     resource: "ExchangeOffice",
     action: "read",
     possession: "any",
   })
-  async currencies(
+  async currencyExchanges(
     @graphql.Parent() parent: ExchangeOffice,
-    @graphql.Args() args: CurrencyFindManyArgs,
+    @graphql.Args() args: CurrencyExchangeFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
-  ): Promise<Currency[]> {
+  ): Promise<CurrencyExchange[]> {
     const permission = this.rolesBuilder.permission({
       role: userRoles,
       action: "read",
       possession: "any",
-      resource: "Currency",
+      resource: "CurrencyExchange",
     });
-    const results = await this.service.findCurrencies(parent.id, args);
+    const results = await this.service.findCurrencyExchanges(parent.id, args);
 
     if (!results) {
       return [];

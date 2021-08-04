@@ -57,35 +57,12 @@ export class CurrencyControllerBase {
       );
     }
     return await this.service.create({
-      data: {
-        ...data,
-
-        exchangeOffice: data.exchangeOffice
-          ? {
-              connect: data.exchangeOffice,
-            }
-          : undefined,
-      },
+      data: data,
       select: {
-        buyCurrency: true,
-        buyingRate: true,
         createdAt: true,
-
-        exchangeOffice: {
-          select: {
-            id: true,
-          },
-        },
-
-        highestBuyingRate: true,
-        highestSellingRate: true,
         id: true,
         iso: true,
-        lowestBuyingRate: true,
-        lowestSellingRate: true,
         Name: true,
-        sellCurrency: true,
-        sellingRate: true,
         updatedAt: true,
       },
     });
@@ -121,25 +98,10 @@ export class CurrencyControllerBase {
     const results = await this.service.findMany({
       ...args,
       select: {
-        buyCurrency: true,
-        buyingRate: true,
         createdAt: true,
-
-        exchangeOffice: {
-          select: {
-            id: true,
-          },
-        },
-
-        highestBuyingRate: true,
-        highestSellingRate: true,
         id: true,
         iso: true,
-        lowestBuyingRate: true,
-        lowestSellingRate: true,
         Name: true,
-        sellCurrency: true,
-        sellingRate: true,
         updatedAt: true,
       },
     });
@@ -170,25 +132,10 @@ export class CurrencyControllerBase {
     const result = await this.service.findOne({
       where: params,
       select: {
-        buyCurrency: true,
-        buyingRate: true,
         createdAt: true,
-
-        exchangeOffice: {
-          select: {
-            id: true,
-          },
-        },
-
-        highestBuyingRate: true,
-        highestSellingRate: true,
         id: true,
         iso: true,
-        lowestBuyingRate: true,
-        lowestSellingRate: true,
         Name: true,
-        sellCurrency: true,
-        sellingRate: true,
         updatedAt: true,
       },
     });
@@ -238,35 +185,12 @@ export class CurrencyControllerBase {
     try {
       return await this.service.update({
         where: params,
-        data: {
-          ...data,
-
-          exchangeOffice: data.exchangeOffice
-            ? {
-                connect: data.exchangeOffice,
-              }
-            : undefined,
-        },
+        data: data,
         select: {
-          buyCurrency: true,
-          buyingRate: true,
           createdAt: true,
-
-          exchangeOffice: {
-            select: {
-              id: true,
-            },
-          },
-
-          highestBuyingRate: true,
-          highestSellingRate: true,
           id: true,
           iso: true,
-          lowestBuyingRate: true,
-          lowestSellingRate: true,
           Name: true,
-          sellCurrency: true,
-          sellingRate: true,
           updatedAt: true,
         },
       });
@@ -298,25 +222,10 @@ export class CurrencyControllerBase {
       return await this.service.delete({
         where: params,
         select: {
-          buyCurrency: true,
-          buyingRate: true,
           createdAt: true,
-
-          exchangeOffice: {
-            select: {
-              id: true,
-            },
-          },
-
-          highestBuyingRate: true,
-          highestSellingRate: true,
           id: true,
           iso: true,
-          lowestBuyingRate: true,
-          lowestSellingRate: true,
           Name: true,
-          sellCurrency: true,
-          sellingRate: true,
           updatedAt: true,
         },
       });

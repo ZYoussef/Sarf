@@ -11,7 +11,7 @@ model User {
   createdAt DateTime @default(now())
   firstName String?
   id        String   @id @default(cuid())
-  lastName  String?
+  lastName  String
   password  String
   roles     String[]
   updatedAt DateTime @updatedAt
@@ -19,38 +19,29 @@ model User {
 }
 
 model ExchangeOffice {
-  address     String
-  createdAt   DateTime   @default(now())
-  currencies  Currency[]
-  id          String     @id @default(cuid())
-  managerName String?
-  name        String
-  phoneNumber String?
-  updatedAt   DateTime   @updatedAt
+  address           String
+  createdAt         DateTime           @default(now())
+  currencyExchanges CurrencyExchange[]
+  id                String             @id @default(cuid())
+  managerName       String?
+  name              String
+  phoneNumber       String?
+  updatedAt         DateTime           @updatedAt
 }
 
 model Currency {
-  buyCurrency        Boolean
-  buyingRate         Float?
-  createdAt          DateTime           @default(now())
-  currencyExchanges  CurrencyExchange[]
-  exchangeOffice     ExchangeOffice?    @relation(fields: [exchangeOfficeId], references: [id])
-  exchangeOfficeId   String?
-  highestBuyingRate  String?
-  highestSellingRate Float?
-  id                 String             @id @default(cuid())
-  iso                String             @unique
-  lowestBuyingRate   Float?
-  lowestSellingRate  Float?
-  Name               String
-  sellCurrency       Boolean
-  sellingRate        Float?
-  updatedAt          DateTime           @updatedAt
+  createdAt         DateTime           @default(now())
+  currencyExchanges CurrencyExchange[]
+  id                String             @id @default(cuid())
+  iso               String             @unique
+  Name              String
+  updatedAt         DateTime           @updatedAt
 }
 
 model CurrencyExchange {
-  createdAt DateTime   @default(now())
-  currency  Currency[]
-  id        String     @id @default(cuid())
-  updatedAt DateTime   @updatedAt
+  createdAt  DateTime         @default(now())
+  id         String           @id @default(cuid())
+  idCurrency Currency[]
+  idOffice   ExchangeOffice[]
+  updatedAt  DateTime         @updatedAt
 }

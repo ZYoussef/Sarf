@@ -15,15 +15,12 @@ class UserCreateInput {
   firstName?: string | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  lastName?: string | null;
+  @Field(() => String)
+  lastName!: string;
 
   @ApiProperty({
     required: true,
