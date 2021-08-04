@@ -1,0 +1,48 @@
+datasource postgres {
+  provider = "postgresql"
+  url      = env("POSTGRESQL_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  createdAt DateTime @default(now())
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String
+  password  String
+  roles     String[]
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+model ExchangeOffice {
+  address           String
+  createdAt         DateTime           @default(now())
+  currencyExchanges CurrencyExchange[]
+  id                String             @id @default(cuid())
+  managerName       String?
+  name              String
+  phoneNumber       String?
+  updatedAt         DateTime           @updatedAt
+}
+
+model Currency {
+  createdAt         DateTime           @default(now())
+  currencyExchanges CurrencyExchange[]
+  id                String             @id @default(cuid())
+  iso               String             @unique
+  Name              String
+  updatedAt         DateTime           @updatedAt
+}
+
+model CurrencyExchange {
+  createdAt  DateTime        @default(now())
+  id         String          @id @default(cuid())
+  idCurrency Currency[]
+  idOffice   ExchangeOffice? @relation(fields: [idOfficeId], references: [id])
+  idOfficeId String?
+  updatedAt  DateTime        @updatedAt
+}
