@@ -11,65 +11,33 @@ import { CurrencyService } from "../currency.service";
 const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
-  buyCurrency: "true",
-  buyingRate: 42.42,
   createdAt: new Date(),
-  highestBuyingRate: "exampleHighestBuyingRate",
-  highestSellingRate: 42.42,
   id: "exampleId",
   iso: "exampleIso",
-  lowestBuyingRate: 42.42,
-  lowestSellingRate: 42.42,
   Name: "exampleName",
-  sellCurrency: "true",
-  sellingRate: 42.42,
   updatedAt: new Date(),
 };
 const CREATE_RESULT = {
-  buyCurrency: "true",
-  buyingRate: 42.42,
   createdAt: new Date(),
-  highestBuyingRate: "exampleHighestBuyingRate",
-  highestSellingRate: 42.42,
   id: "exampleId",
   iso: "exampleIso",
-  lowestBuyingRate: 42.42,
-  lowestSellingRate: 42.42,
   Name: "exampleName",
-  sellCurrency: "true",
-  sellingRate: 42.42,
   updatedAt: new Date(),
 };
 const FIND_MANY_RESULT = [
   {
-    buyCurrency: "true",
-    buyingRate: 42.42,
     createdAt: new Date(),
-    highestBuyingRate: "exampleHighestBuyingRate",
-    highestSellingRate: 42.42,
     id: "exampleId",
     iso: "exampleIso",
-    lowestBuyingRate: 42.42,
-    lowestSellingRate: 42.42,
     Name: "exampleName",
-    sellCurrency: "true",
-    sellingRate: 42.42,
     updatedAt: new Date(),
   },
 ];
 const FIND_ONE_RESULT = {
-  buyCurrency: "true",
-  buyingRate: 42.42,
   createdAt: new Date(),
-  highestBuyingRate: "exampleHighestBuyingRate",
-  highestSellingRate: 42.42,
   id: "exampleId",
   iso: "exampleIso",
-  lowestBuyingRate: 42.42,
-  lowestSellingRate: 42.42,
   Name: "exampleName",
-  sellCurrency: "true",
-  sellingRate: 42.42,
   updatedAt: new Date(),
 };
 

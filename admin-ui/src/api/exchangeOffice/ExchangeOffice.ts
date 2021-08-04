@@ -1,9 +1,9 @@
-import { Currency } from "../currency/Currency";
+import { CurrencyExchange } from "../currencyExchange/CurrencyExchange";
 
 export type ExchangeOffice = {
   address: string;
   createdAt: Date;
-  currencies?: Array<Currency>;
+  currencyExchanges?: Array<CurrencyExchange>;
   id: string;
   managerName: string | null;
   name: string;

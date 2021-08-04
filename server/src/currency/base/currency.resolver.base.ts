@@ -16,7 +16,6 @@ import { CurrencyFindUniqueArgs } from "./CurrencyFindUniqueArgs";
 import { Currency } from "./Currency";
 import { CurrencyExchangeFindManyArgs } from "../../currencyExchange/base/CurrencyExchangeFindManyArgs";
 import { CurrencyExchange } from "../../currencyExchange/base/CurrencyExchange";
-import { ExchangeOffice } from "../../exchangeOffice/base/ExchangeOffice";
 import { CurrencyService } from "../currency.service";
 
 @graphql.Resolver(() => Currency)
@@ -123,15 +122,7 @@ export class CurrencyResolverBase {
     // @ts-ignore
     return await this.service.create({
       ...args,
-      data: {
-        ...args.data,
-
-        exchangeOffice: args.data.exchangeOffice
-          ? {
-              connect: args.data.exchangeOffice,
-            }
-          : undefined,
-      },
+      data: args.data,
     });
   }
 
@@ -170,15 +161,7 @@ export class CurrencyResolverBase {
       // @ts-ignore
       return await this.service.update({
         ...args,
-        data: {
-          ...args.data,
-
-          exchangeOffice: args.data.exchangeOffice
-            ? {
-                connect: args.data.exchangeOffice,
-              }
-            : undefined,
-        },
+        data: args.data,
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -236,29 +219,5 @@ export class CurrencyResolverBase {
     }
 
     return results.map((result) => permission.filter(result));
-  }
-
-  @graphql.ResolveField(() => ExchangeOffice, { nullable: true })
-  @nestAccessControl.UseRoles({
-    resource: "Currency",
-    action: "read",
-    possession: "any",
-  })
-  async exchangeOffice(
-    @graphql.Parent() parent: Currency,
-    @gqlUserRoles.UserRoles() userRoles: string[]
-  ): Promise<ExchangeOffice | null> {
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "read",
-      possession: "any",
-      resource: "ExchangeOffice",
-    });
-    const result = await this.service.getExchangeOffice(parent.id);
-
-    if (!result) {
-      return null;
-    }
-    return permission.filter(result);
   }
 }

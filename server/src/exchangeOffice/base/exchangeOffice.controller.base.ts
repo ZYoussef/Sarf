@@ -15,8 +15,8 @@ import { ExchangeOfficeWhereUniqueInput } from "./ExchangeOfficeWhereUniqueInput
 import { ExchangeOfficeFindManyArgs } from "./ExchangeOfficeFindManyArgs";
 import { ExchangeOfficeUpdateInput } from "./ExchangeOfficeUpdateInput";
 import { ExchangeOffice } from "./ExchangeOffice";
-import { CurrencyWhereInput } from "../../currency/base/CurrencyWhereInput";
-import { Currency } from "../../currency/base/Currency";
+import { CurrencyExchangeWhereInput } from "../../currencyExchange/base/CurrencyExchangeWhereInput";
+import { CurrencyExchange } from "../../currencyExchange/base/CurrencyExchange";
 
 export class ExchangeOfficeControllerBase {
   constructor(
@@ -251,51 +251,34 @@ export class ExchangeOfficeControllerBase {
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
   @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Get("/:id/currencies")
+  @common.Get("/:id/currencyExchanges")
   @nestAccessControl.UseRoles({
     resource: "ExchangeOffice",
     action: "read",
     possession: "any",
   })
   @swagger.ApiQuery({
-    type: () => CurrencyWhereInput,
+    type: () => CurrencyExchangeWhereInput,
     style: "deepObject",
     explode: true,
   })
-  async findManyCurrencies(
+  async findManyCurrencyExchanges(
     @common.Req() request: Request,
     @common.Param() params: ExchangeOfficeWhereUniqueInput,
     @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<Currency[]> {
-    const query: CurrencyWhereInput = request.query;
+  ): Promise<CurrencyExchange[]> {
+    const query: CurrencyExchangeWhereInput = request.query;
     const permission = this.rolesBuilder.permission({
       role: userRoles,
       action: "read",
       possession: "any",
-      resource: "Currency",
+      resource: "CurrencyExchange",
     });
-    const results = await this.service.findCurrencies(params.id, {
+    const results = await this.service.findCurrencyExchanges(params.id, {
       where: query,
       select: {
-        buyCurrency: true,
-        buyingRate: true,
         createdAt: true,
-
-        exchangeOffice: {
-          select: {
-            id: true,
-          },
-        },
-
-        highestBuyingRate: true,
-        highestSellingRate: true,
         id: true,
-        iso: true,
-        lowestBuyingRate: true,
-        lowestSellingRate: true,
-        Name: true,
-        sellCurrency: true,
-        sellingRate: true,
         updatedAt: true,
       },
     });
@@ -304,19 +287,19 @@ export class ExchangeOfficeControllerBase {
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
   @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Post("/:id/currencies")
+  @common.Post("/:id/currencyExchanges")
   @nestAccessControl.UseRoles({
     resource: "ExchangeOffice",
     action: "update",
     possession: "any",
   })
-  async createCurrencies(
+  async createCurrencyExchanges(
     @common.Param() params: ExchangeOfficeWhereUniqueInput,
     @common.Body() body: ExchangeOfficeWhereUniqueInput[],
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<void> {
     const data = {
-      currencies: {
+      currencyExchanges: {
         connect: body,
       },
     };
@@ -346,19 +329,19 @@ export class ExchangeOfficeControllerBase {
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
   @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Patch("/:id/currencies")
+  @common.Patch("/:id/currencyExchanges")
   @nestAccessControl.UseRoles({
     resource: "ExchangeOffice",
     action: "update",
     possession: "any",
   })
-  async updateCurrencies(
+  async updateCurrencyExchanges(
     @common.Param() params: ExchangeOfficeWhereUniqueInput,
     @common.Body() body: ExchangeOfficeWhereUniqueInput[],
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<void> {
     const data = {
-      currencies: {
+      currencyExchanges: {
         set: body,
       },
     };
@@ -388,19 +371,19 @@ export class ExchangeOfficeControllerBase {
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
   @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Delete("/:id/currencies")
+  @common.Delete("/:id/currencyExchanges")
   @nestAccessControl.UseRoles({
     resource: "ExchangeOffice",
     action: "update",
     possession: "any",
   })
-  async deleteCurrencies(
+  async deleteCurrencyExchanges(
     @common.Param() params: ExchangeOfficeWhereUniqueInput,
     @common.Body() body: ExchangeOfficeWhereUniqueInput[],
     @nestAccessControl.UserRoles() userRoles: string[]
   ): Promise<void> {
     const data = {
-      currencies: {
+      currencyExchanges: {
         disconnect: body,
       },
     };

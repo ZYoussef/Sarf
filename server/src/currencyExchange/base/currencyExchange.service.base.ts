@@ -1,5 +1,10 @@
 import { PrismaService } from "nestjs-prisma";
-import { Prisma, CurrencyExchange, Currency } from "@prisma/client";
+import {
+  Prisma,
+  CurrencyExchange,
+  Currency,
+  ExchangeOffice,
+} from "@prisma/client";
 
 export class CurrencyExchangeServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -36,7 +41,7 @@ export class CurrencyExchangeServiceBase {
     return this.prisma.currencyExchange.delete(args);
   }
 
-  async findCurrency(
+  async findIdCurrency(
     parentId: string,
     args: Prisma.CurrencyFindManyArgs
   ): Promise<Currency[]> {
@@ -44,6 +49,17 @@ export class CurrencyExchangeServiceBase {
       .findUnique({
         where: { id: parentId },
       })
-      .currency(args);
+      .idCurrency(args);
+  }
+
+  async findIdOffice(
+    parentId: string,
+    args: Prisma.ExchangeOfficeFindManyArgs
+  ): Promise<ExchangeOffice[]> {
+    return this.prisma.currencyExchange
+      .findUnique({
+        where: { id: parentId },
+      })
+      .idOffice(args);
   }
 }

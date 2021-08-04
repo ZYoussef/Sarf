@@ -1,10 +1,5 @@
 import { PrismaService } from "nestjs-prisma";
-import {
-  Prisma,
-  Currency,
-  CurrencyExchange,
-  ExchangeOffice,
-} from "@prisma/client";
+import { Prisma, Currency, CurrencyExchange } from "@prisma/client";
 
 export class CurrencyServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -50,13 +45,5 @@ export class CurrencyServiceBase {
         where: { id: parentId },
       })
       .currencyExchanges(args);
-  }
-
-  async getExchangeOffice(parentId: string): Promise<ExchangeOffice | null> {
-    return this.prisma.currency
-      .findUnique({
-        where: { id: parentId },
-      })
-      .exchangeOffice();
   }
 }
