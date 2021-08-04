@@ -1,0 +1,2 @@
+class CurrencyExchangeCreateInput {}
+export { CurrencyExchangeCreateInput };

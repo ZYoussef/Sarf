@@ -1,0 +1,2 @@
+class CurrencyExchangeUpdateInput {}
+export { CurrencyExchangeUpdateInput };
